@@ -1,0 +1,101 @@
+@import "resets";
+@import "variables";
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;300;400;500;600;700;800;900&display=swap');
+
+
+
+// Maps
+// Maps - are lists of key value pairs
+
+$font-weights: (
+  "thin": 100,
+  "light": 300,
+  "regular": 400,
+  "medium": 500,
+  "semi-bold": 600,
+  "bold": 700,
+  "extra-bold": 800,
+  "mega-bold": 900
+);
+
+// Functions
+// Functions should be used to compute and return values
+@function weight($weight-name) {
+  @return map-get($font-weights, $weight-name);
+}
+
+// Mixins
+// Mixins should define styles
+@mixin flexBetween($direction) {
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
+  flex-direction: $direction;
+}
+
+@mixin theme($light-theme: true) {
+  @if $light-theme {
+    background: lighten($primary-color, 100%);
+    color: darken($text-color, 100%);
+  }
+}
+
+@mixin mobile {
+  @media only screen and (max-width: $mobile) {
+    @content;
+  }
+}
+
+body {
+  font-family:'Poppins', sans-serif;
+  // Default theme colors
+  background-color: $primary-color;
+  color: $text-color;
+  // End default theme colors
+  line-height: 1.5;
+  font-weight: weight(light);
+}
+
+h1 {
+  text-align: center;
+  margin: 2rem;
+  font-weight: weight(mega-bold);
+}
+
+.main {
+  @include flexBetween(row);
+  // Calculations - In SASS you don't need the calc() function
+  // With SASS we cannot mix types
+  width: 100% - 10%;
+  margin: 0 auto;
+  
+  &-paragraph1 {
+    font-weight: weight(thin);
+    padding: 1rem;
+    transition: color 0.3s ease-in-out;
+
+    &:hover {
+      color: $accent-color;
+    }
+  }
+
+  &-paragraph2 {
+    // @extend allows us to add all styles from a class to another element
+    @extend .main-paragraph1;
+
+    &:hover {
+      color: lightblue;
+    }
+  }
+
+  @include mobile {
+    flex-direction: column;
+  }
+}
+
+.light {
+  @include theme($light-theme: false);
+}
+
+// Learn more from the documentation 
